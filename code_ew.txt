@@ -1,0 +1,82 @@
+# cDNA sequencing and direct RNA sequencing for Ewing Sarcoma cells.
+# 26, Aug., 2025
+# Masahiko Ajiro
+
+# environment
+Python 3.12.0
+dorado 0.7.3
+minimap2 2.26-r1175
+samtools 1.19.2
+
+####################
+ONT cDNA-sequencing
+
+# basecalling
+# MinKNOW 24.11.10
+# flowcell FLO-PRO114M
+# library SQK-PCS114
+    
+# filtering:
+    Q >= 9
+    length >= 200
+
+# aligment
+minimap2 -t <Int> \
+-ax splice \
+--eqx \
+--secondar=yes \
+--MD \
+--cs=long \
+--splice-flank=no \
+<GRCh38.fa> <input.fa> \
+> <output.sam>
+
+samtools sort -@ <Int> \
+-o <output.bam> \
+-O BAM \
+-T <prefix> \
+<output.sam>
+
+samtools index -@ <Int> \
+-b \
+<output.bam> \
+<output.bam.bai>
+
+# visualization
+igv 2.19.1
+
+####################
+ONT direct RNA-sequencing
+
+# pod5 data acquisition
+# MinKNOW 24.11.10
+# flowcell FLO-PRO04RA
+# library SQK-RNA004
+    
+# basecalling
+dorado basecaller hac,m6A pod5_dir/ \
+--verbose \
+--mm2-preset splice \
+-k 14 \
+> <output.bam> \
+2> log.txt
+
+# alignment
+dorado aligner <GRCh38.fa> \
+<output.bam> \
+> <aligned.bam>
+
+samtools sort \
+-@ <Int> \
+-o <sorted_aligned.bam> \
+<aligned.bam>
+
+samtools index \
+-@ <Int> \
+-b \
+<sorted_aligned.bam> \
+<sorted_aligned.bam.bai>
+
+# visualization
+igv 2.19.1
+

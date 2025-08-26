@@ -1,4 +1,4 @@
-cDNA-sequencing, dRNA-sequencing, m6A modification analysis using ONT PromethION
+cDNA-sequencing, dRNA-sequencing, m6A modification analysis using ONT PromethION (code_ew.txt)
 
 environment
 Python 3.12.0

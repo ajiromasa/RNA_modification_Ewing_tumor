@@ -1,4 +1,8 @@
-cDNA-sequencing, dRNA-sequencing, m6A modification analysis using ONT PromethION (code_ew.txt)
+# RNA-seq for Ewing Sarcoma cells. cDNA sequencing and direct RNA sequencing.
+# 26, Aug., 2025
+# Masahiko Ajiro
+
+# code_ew.txt describes cDNA-sequencing, dRNA-sequencing, m6A modification analysis.
 
 environment
 Python 3.12.0

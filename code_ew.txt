@@ -7,6 +7,8 @@ Python 3.12.0
 dorado 0.7.3
 minimap2 2.26-r1175
 samtools 1.19.2
+igv 2.19.1
+modkit 0.6.1
 
 ####################
 ONT cDNA-sequencing
@@ -77,6 +79,10 @@ samtools index \
 <sorted_aligned.bam> \
 <sorted_aligned.bam.bai>
 
-# visualization
-igv 2.19.1
+# m6A modification quantification
 
+modkit pileup <sorted_aligned.bam> <sorted_aligned.bed> \
+--modified-bases m6A \
+-t <Int> \
+--reference GRCh38.fa \
+--mod-threshold a:0.3

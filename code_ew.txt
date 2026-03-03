@@ -1,4 +1,4 @@
-# cDNA sequencing and direct RNA sequencing for Ewing Sarcoma cells.
+# RNA-seq for Ewing Sarcoma cells. cDNA sequencing and direct RNA sequencing.
 # 26, Aug., 2025
 # Masahiko Ajiro
 
@@ -86,3 +86,37 @@ modkit pileup <sorted_aligned.bam> <sorted_aligned.bed> \
 -t <Int> \
 --reference GRCh38.fa \
 --mod-threshold a:0.3
+
+###########################
+short-read RNA-seq analysis
+
+# emvironment
+Python 3.12.0
+samtools 1.19.2
+STAR 2.7.10b
+stringtie 2.2.1
+
+# index preparation
+STAR --runThreadN <Int> \
+--runMode genomeGenerate \
+--genomeDir <index_name> \
+--genomeFastaFiles GRCh38.fa \
+--sjdbGTFfile <GRCh38.gtf> \
+--sjdbOverhang 99
+
+# alignment
+STAR --runThreadN <Int> \
+--twopassMode Basic \
+--limitBAMsortRAM <Int> \
+--outSAMtype BAM SortedByCoordinate (optional; --readFilesCommand gunzip -c) \
+--genomeDir <index> \
+--outFileNamePrefix <prefix> \
+--readFilesIn <fastq_files>
+
+# indexing
+samtools index -@ <Int> <output_bam>
+
+# assembly
+stringtie -p <Int> -e -G <reference> \
+-o <output_gtf> <output_bam>
+prepDE.py3 -i <gtf_list> -l 100
